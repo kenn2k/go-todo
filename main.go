@@ -1,7 +1,21 @@
 package main
 
-import "fmt"
+import (
+    "log"
+    "net/http"
+    "os"
+    
+)
 
 func main() {
-    fmt.Println("Hello, world!")
+    InitDB()
+    defer DB.Close()
+
+    todos := NewTodos(DB)
+    SetupRoutes(todos)
+
+    port := os.Getenv("PORT")
+   
+    
+    log.Fatal(http.ListenAndServe(":"+port, nil))
 }
